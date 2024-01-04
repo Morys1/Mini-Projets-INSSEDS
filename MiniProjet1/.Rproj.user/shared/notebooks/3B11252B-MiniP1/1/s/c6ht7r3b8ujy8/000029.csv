@@ -1,0 +1,2 @@
+"0","par(mfrow=c(1, 2))"
+"0","knitr::kable(tab.genre$Tableau_Contingence, caption = ""TABLEAU DE CONTINGENCE"")"

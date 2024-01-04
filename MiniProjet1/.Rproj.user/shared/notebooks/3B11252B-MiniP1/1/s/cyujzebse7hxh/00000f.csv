@@ -1,0 +1,4 @@
+"0","par(mfrow=c(1, 2))"
+"0","ggplot(df, aes(x = factor(RestingECG))) +"
+"0","  geom_bar(aes(fill = factor(HeartDisease, labels = c(""Non"", ""Oui""))), position = ""dodge"")+"
+"0","  labs(x = ""ECG au Repos"", fill = ""Heart Disease"")"

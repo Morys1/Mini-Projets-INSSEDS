@@ -1,0 +1,1 @@
+"0","plot(table(df$HeartDisease, df$ST_Slope),main=""GRAPHIQUE"",col=c(""orange"",""blue"", ""skyblue""), border = NA)"

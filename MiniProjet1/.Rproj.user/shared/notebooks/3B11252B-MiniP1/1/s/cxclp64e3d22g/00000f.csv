@@ -1,0 +1,8 @@
+"0","pt.chol <- ggplot(data = dfquant)"
+"0","Hist.chol <- pt.chol + "
+"0","  geom_histogram(mapping = aes(Cholesterola), colour = ""white"", fill = ""yellow"", bins = 10) + "
+"0","  ylab(""Nombre d'Individus"") + "
+"0","  xlab(""Taux de cholesterol en mg/dl"") +"
+"0","  ggtitle(""HISTOGRAMME DU TAUX DE CHOLESTEROL"") +"
+"0","  theme(plot.title = element_text(hjust = 0.5))"
+"0","Hist.chol"

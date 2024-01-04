@@ -1,0 +1,2 @@
+"0",""
+"0","plot(table(df$HeartDisease, df$FastingBS),main=""GRAPHIQUE"",col=c(""blue"", ""red""), border = NA)"

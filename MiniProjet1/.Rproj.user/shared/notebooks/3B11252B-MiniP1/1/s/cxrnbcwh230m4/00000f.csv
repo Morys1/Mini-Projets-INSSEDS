@@ -1,0 +1,8 @@
+"0","pt.odp <- ggplot(data = df)"
+"0","Hist.odp <- pt.odp + "
+"0","  geom_histogram(mapping = aes(dfq$Oldpeak), colour = ""white"", fill = ""grey"", bins = 10) + "
+"0","  ylab(""Nombre d'Individus"") + "
+"0","  xlab(""Ecart (mm)"") +"
+"0","  ggtitle(""HISTOGRAMME DE LA MESURE DE L'ECG"") +"
+"0","  theme(plot.title = element_text(hjust = 0.5))"
+"0","Hist.odp"

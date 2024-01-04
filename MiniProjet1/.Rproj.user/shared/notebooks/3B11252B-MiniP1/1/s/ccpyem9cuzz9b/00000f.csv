@@ -1,0 +1,1 @@
+"0","tab.ecg <- akposso.2ql.tableau(df$HeartDisease, df$RestingECG)"

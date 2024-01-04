@@ -1,0 +1,135 @@
+#---------------------------------------------------------------------#
+# 1ere partie  - ICHARGEMENT DU PACKAGE D'ANALYSE
+#---------------------------------------------------------------------#
+library(akposso)
+
+#---------------------------------------------------------------------------------------------#
+# FONCTIONS DE PRETRAITEMENT DES DONNEES
+#---------------------------------------------------------------------------------------------#
+# traitement_doublons()                         # traitement des doublons d'un dataframe
+# traitement_donnees_manquantes()               # traitement des NA d'un dataframe
+# afficher_boites_a_moustache()                 # affiche les boites à moustache d"un dataframe
+# traitement_donnees_extremes()                 # traitement des outlyers d'un dataframe
+# extraire_variables_quantitatives()            # extraction des variables quanti d"un dataframe
+# extraire_variables_qualitatives()             # extraction des variables quali d"un dataframe
+# transformer_en_tableau_disjonctif_complet()   # transformation en tableau disjonctif complet d'un dataframe
+#---------------------------------------------------------------------------------------------#
+# FONCTIONS D'ANALYSE UNIVARIEE EN STATISTIQUE DESCRIPTIVE
+#---------------------------------------------------------------------------------------------#
+# akposso.qt.tableau()   # tableau statistique de variable quantitative
+# akposso.qt.graph()     # graphiques de variable quantitative
+# akposso.qt.resume()    # resume numerique de variable quantitative
+# akposso.ql.tableau()   # tableau statistique de variable qualitative
+# akposso.ql.graph()     # graphique de variable qualitative
+#---------------------------------------------------------------------------------------------#
+# FONCTIONS D'ANALYSE BIVARIEE EN STATISTIQUE DESCRIPTIVE
+#---------------------------------------------------------------------------------------------#
+# akposso.2qt.liaison()  # liaison entre deux variables quantitatives
+# akposso.2ql.tableau()  # tableaux statistiques de deux variables qualitatives
+# akposso.2ql.graph()    # graphiques de deux variables qualitatives
+# akposso.2ql.liaison()  # liaison entre deux variables qualitatives
+# akposso.qtql.liaison() # liaison entre une variable quantitative et une variable qualitative
+#---------------------------------------------------------------------------------------------#
+# test_normalite_akposso() # Test de normalite
+#---------------------------------------------------------------------------------------------#
+
+#---------------------------------------------------------------------#
+# 2eme partie  - IMPORTATION DES DONNEES
+#---------------------------------------------------------------------#
+setwd("C:/jeudonnee")
+ronfle = read.table("ronfle_NA.csv",
+                    header=TRUE,
+                    sep=";",
+                    check.names=FALSE,
+                    row.names=1,
+                    stringsAsFactors = TRUE)
+
+# Exploration des donnees importees
+head(ronfle, 5)  # afficher les 5 premiers individus
+tail(ronfle, 3)  # afficher les 3 derniers individus
+str(ronfle)      # affiche la struture du jeu de donnee
+summary(ronfle)  # affiche le resume des donnees
+
+#----------------------------------------------------------------#
+# 3eme partie - PRETRAITEMENT DES DONNEES
+#----------------------------------------------------------------#
+
+# 1 - Transformer les variables binaires en en variables qualitatives
+ronfle$RONFLE <- factor(ronfle$RONFLE, labels=c("ne ronfle pas","ronfle"))
+ronfle$SEXE <- factor(ronfle$SEXE,labels=c("homme","femme"))
+ronfle$TABA <- factor(ronfle$TABA, labels=c("non fumeur","fumeur"))
+str(ronfle)
+head(ronfle)
+
+# 2- Traitement des doublons
+ronfle_doublon = traitement_doublons(ronfle)
+
+# 3- Traitement des donnees manquantes
+library(visdat)
+vis_dat(ronfle_doublon)
+ronfle_NA_traite = traitement_donnees_manquantes(ronfle_doublon)
+vis_dat(ronfle_NA_traite)
+
+# traitement des valeurs abberantes et extremes
+afficher_boites_a_moustache(ronfle_NA_traite)
+ronfle_outlyers_traite = traitement_donnees_extremes(ronfle_NA_traite)
+afficher_boites_a_moustache(ronfle_outlyers_traite)
+
+#-------------------------------------------------------------------------------#
+# 4eme partie :  - ANALYSE STATISTIQUE UNIVARIEE
+#-------------------------------------------------------------------------------#
+
+# renommer le jeu de donnees pretraite
+ronfle = ronfle_outlyers_traite
+
+# ETUDE DE LA VARIABLE AGE
+akposso.qt.tableau(ronfle$AGE)
+akposso.qt.graph(ronfle$AGE)
+akposso.qt.resume(ronfle$AGE)
+test_normalite_akposso(ronfle$AGE)
+
+# ETUDE DE LA VARIABLE POIDS
+akposso.qt.tableau(ronfle$POIDS)
+akposso.qt.graph(ronfle$POIDS)
+akposso.qt.resume(ronfle$POIDS)
+test_normalite_akposso(ronfle$POIDS)
+
+# VARIABLE RONFLE
+akposso.ql.tableau(ronfle$RONFLE)
+akposso.ql.graph(ronfle$TABA)
+
+#-------------------------------------------------------------------------------#
+# 5eme partie  - ANALYSE STATISTIQUE BIVARIEE
+#-------------------------------------------------------------------------------#
+# la consommation alcoolique d?pend-elle de l'Age ?
+# VARIABLE ALCOOL et AGE
+table(ronfle$AGE, ronfle$ALCOOL) # tableau de contingence
+plot(ronfle$AGE, ronfle$ALCOOL) # nuage de point
+abline(lm(ronfle$ALCOOL ~ ronfle$AGE)) # ajustement lineaire
+lm(ronfle$ALCOOL ~ ronfle$AGE) # equation de la droite
+akposso.2qt.liaison(ronfle$AGE, ronfle$ALCOOL)
+
+# le ronflement d?pend-il de l'Age
+# VARIABLE AGE et RONFLE
+table(ronfle$AGE, ronfle$RONFLE)
+boxplot(ronfle$AGE ~ ronfle$RONFLE, col=c("Orange","green"))
+akposso.qtql.liaison(ronfle$AGE, ronfle$RONFLE)
+
+# le ronflement depend-il du sexe
+# VARIABLE RONFLE et SEXE
+akposso.2ql.tableau(ronfle$RONFLE, ronfle$SEXE)
+akposso.2ql.graph(ronfle$RONFLE, ronfle$SEXE)
+akposso.2ql.liaison(ronfle$RONFLE, ronfle$SEXE)
+plot(table(ronfle$RONFLE, ronfle$SEXE),main="GRAPHIQUE",col=c("Orange","blue"))
+
+# extration des var QT
+ronfle_quant = extraire_variables_quantitatives(ronfle)
+head(ronfle_quant)
+
+# extraction des var QL
+ronfle_quali = extraire_variables_qualitatives(ronfle)
+head(ronfle_quali)
+
+# tableau disjonctif complet
+ronfle_disjonctif = transformer_en_tableau_disjonctif_complet(ronfle)
+head(ronfle_disjonctif)

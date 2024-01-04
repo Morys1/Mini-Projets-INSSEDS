@@ -1,0 +1,4 @@
+"0","par(mfrow=c(1, 2))"
+"0","ggplot(df, aes(x = factor(Sex, labels = c(""Femme"", ""Homme"")))) +"
+"0","  geom_bar(aes(fill = factor(HeartDisease, labels = c(""Oui"", ""Non""))), position = ""dodge"")+"
+"0","  labs(x = ""Sexe"", fill = ""Heart Disease"")"

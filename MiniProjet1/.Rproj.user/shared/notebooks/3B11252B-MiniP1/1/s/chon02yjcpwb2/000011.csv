@@ -1,0 +1,2 @@
+"0",""
+"0","plot(table(df$HeartDisease, df$Sex),main=""GRAPHIQUE"",col=c(""orange"",""blue""))"
